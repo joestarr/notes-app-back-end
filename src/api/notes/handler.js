@@ -160,8 +160,10 @@ class NotesHandler {
         status: 'error',
         message: 'Maaf, terjadi kegagalan pada server kami',
       });
+
       response.code(500);
       console.error(error);
+      console.log('ngaber');
       return response;
     }
   }
