@@ -164,6 +164,7 @@ class NotesHandler {
       response.code(500);
       console.error(error);
       console.log('ngaber');
+      console.log('utiwi');
       return response;
     }
   }
