@@ -13,7 +13,7 @@ class NotesHandler {
     this.deleteNoteByIdHandler = this.deleteNoteByIdHandler.bind(this);
   }
 
-  postNoteHandler(request, h) {
+  async postNoteHandler(request, h) {
     try {
       this._validator.validateNotePayload(request.payload);
       const {
@@ -22,7 +22,7 @@ class NotesHandler {
         tags,
       } = request.payload;
 
-      const noteId = this._servicesess.addNote({
+      const noteId = await this._servicesess.addNote({
         title,
         body,
         tags,
@@ -44,6 +44,7 @@ class NotesHandler {
           status: 'fail',
           message: error.message,
         });
+
         response.code(error.statusCode);
         return response;
       }
@@ -59,8 +60,8 @@ class NotesHandler {
     }
   }
 
-  getNotesHandler() {
-    const notes = this._servicesess.getNotes();
+  async getNotesHandler() {
+    const notes = await this._servicesess.getNotes();
     return {
       status: 'success',
       data: {
@@ -69,10 +70,10 @@ class NotesHandler {
     };
   }
 
-  getNoteByIdHandler(request, h) {
+  async getNoteByIdHandler(request, h) {
     try {
       const { id } = request.params;
-      const note = this._servicesess.getNoteById(id);
+      const note = await this._servicesess.getNoteById(id);
 
       return {
         status: 'success',
@@ -102,12 +103,12 @@ class NotesHandler {
     }
   }
 
-  putNoteByIdHandler(request, h) {
+  async putNoteByIdHandler(request, h) {
     try {
       this._validator.validateNotePayload(request.payload);
       const { id } = request.params;
 
-      this._servicesess.editNoteById(id, request.payload);
+      await this._servicesess.editNoteById(id, request.payload);
 
       return {
         status: 'success',
@@ -135,10 +136,10 @@ class NotesHandler {
     }
   }
 
-  deleteNoteByIdHandler(request, h) {
+  async deleteNoteByIdHandler(request, h) {
     try {
       const { id } = request.params;
-      this._servicesess.deleteNoteById(id);
+      await this._servicesess.deleteNoteById(id);
 
       return {
         status: 'success',
@@ -163,8 +164,6 @@ class NotesHandler {
 
       response.code(500);
       console.error(error);
-      console.log('ngaber');
-      console.log('utiwi');
       return response;
     }
   }
